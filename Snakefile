@@ -131,6 +131,7 @@ rule calib:
             --output-prefix $folder/ > {log}
         """
 
+
 rule pardre:
     """Run ParDRe on the fastq files"""
     input:
