@@ -31,9 +31,9 @@ of priority.
 
 ### Supported settings
 The following settings are available for the pipeline.
-| Option               | Type              | Explanation                             |
-| ---------------------| ----------------- | --------------------------------------- |
-| reference            | Optional file     | If specified, the reads will be mapped to the reference |
+| Option               | Type              | Explanation                                       |
+| ---------------------| ----------------- | ------------------------------------------------- |
+| repeats              | Optional integer  | How many times the benchmark should be repeated   |
 
 ## Tests
 You can run the tests that accompany this pipeline with the following commands

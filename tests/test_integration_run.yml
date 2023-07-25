@@ -15,3 +15,6 @@
     - path: sample1/umi-trie/forward_dedup.fastq.gz
     - path: sample1/umi-trie/reverse_dedup.fastq.gz
     - path: sample1/umi-trie/umi_dedup.fastq.gz
+    - path: benchmarks/humid_sample1.tsv
+      contains:
+        - max_rss

@@ -47,8 +47,8 @@ rule concat:
         """
 
 
-rule umi_trie:
-    """Run umi-trie on the fastq files"""
+rule humid:
+    """Run HUMID on the fastq files"""
     input:
         forw=rules.concat.output.forw,
         rev=rules.concat.output.rev,
@@ -60,6 +60,8 @@ rule umi_trie:
         stats="{sample}/umi-trie/stats.dat",
     log:
         "log/{sample}-umi-trie.txt",
+    benchmark:
+        repeat("benchmarks/humid_{sample}.tsv", config["repeats"])
     container:
         containers["humid"]
     shell:

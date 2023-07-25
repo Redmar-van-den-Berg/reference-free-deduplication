@@ -4,6 +4,7 @@ containers = {
 }
 
 default = dict()
+default["repeats"] = 1
 
 
 pepfile: config["pepfile"]
