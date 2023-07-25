@@ -25,6 +25,10 @@ rule all:
             "{sample}/calib/cluster",
             sample=pep.sample_table["sample_name"],
         ),
+        pardre=expand(
+            "{sample}/pardre/forward.fastq.gz",
+            sample=pep.sample_table["sample_name"],
+        ),
 
 
 rule concat:
@@ -125,4 +129,35 @@ rule calib:
             --barcode-length-2 0 \
             --gzip-input \
             --output-prefix $folder/ 2> {log}
+        """
+
+rule pardre:
+    """Run ParDRe on the fastq files"""
+    input:
+        forw=rules.prepend_umi.output.forw,
+        rev=rules.concat.output.rev,
+    params:
+        umi_length=8,
+        mismatch=1,
+    output:
+        forw="{sample}/pardre/forward.fastq.gz",
+        rev="{sample}/pardre/reverse.fastq.gz",
+    log:
+        "log/{sample}-pardre.txt",
+    benchmark:
+        repeat("benchmarks/pardre_{sample}.tsv", config["repeats"])
+    container:
+        containers["pardre"]
+    shell:
+        """
+        folder=$(dirname {output.forw})
+        mkdir -p $folder
+
+        ParDRe \
+            -i {input.forw} \
+            -p {input.rev} \
+            -m {params.mismatch} \
+            -z 1 \
+            -o {output.forw} \
+            -r {output.rev} 2> {log}
         """

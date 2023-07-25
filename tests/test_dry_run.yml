@@ -18,3 +18,5 @@
       - "sample1/concat/forward.calib.fastq.gz"
       # Test the output file from Calib
       - "rule calib:"
+      # Test that we run ParDRe
+      - "rule pardre:"

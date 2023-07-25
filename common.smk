@@ -4,6 +4,7 @@ containers = {
     "calib": "docker://quay.io/biocontainers/calib:0.3.4--hdcf5f25_5",
     # mulled container with dnaio=0.8.1 and pysam=0.19.0
     "dnaio": "docker://quay.io/biocontainers/mulled-v2-2996a7d035117c4238b2b801e740a69df21d91e1:6b3ae5f1a97f370227e8134ba3efc0e318b288c3-0",
+    "pardre": "docker://quay.io/biocontainers/pardre:2.2.5--h6b557da_3",
 }
 
 default = dict()

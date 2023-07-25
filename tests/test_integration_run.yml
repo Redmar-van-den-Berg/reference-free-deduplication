@@ -24,3 +24,7 @@
     # Test output file for Calib
     - path: sample1/calib/cluster
     - path: benchmarks/calib_sample1.tsv
+    # Test output files for ParDRE
+    - path: sample1/pardre/forward.fastq.gz
+    - path: sample1/pardre/reverse.fastq.gz
+    - path: benchmarks/pardre_sample1.tsv
