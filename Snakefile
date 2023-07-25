@@ -51,8 +51,8 @@ rule concat:
         """
 
 
-rule prepare_calib:
-    """Prepend the UMI to the first read for Calib"""
+rule prepend_umi:
+    """Prepend the UMI to the first read"""
     input:
         forw=rules.concat.output.forw,
         umi=rules.concat.output.umi,
@@ -101,7 +101,7 @@ rule humid:
 rule calib:
     """Run Calib on the fastq files"""
     input:
-        forw=rules.prepare_calib.output.forw,
+        forw=rules.prepend_umi.output.forw,
         rev=rules.concat.output.rev,
     params:
         umi_length=8,
