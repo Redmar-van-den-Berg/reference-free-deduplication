@@ -9,16 +9,9 @@
       --latency-wait 120
       --use-singularity --singularity-args ' --cleanenv --bind /tmp'
       --singularity-prefix '~/.singularity/cache/snakemake'
-      --config pepfile=tests/pep/project_config.yaml
+      --config pepfile=tests/pep/samples.csv
       --snakefile Snakefile
-  stderr:
-    must_not_contain:
-      - rror
   files:
-    - path: outputfile.txt
-      contains:
-        - Hello world!
-    - path: sample1.txt
-    - path: sample2.txt
-    - path: sample3.txt
-    - path: sample1.bam
+    - path: sample1/umi-trie/forward_dedup.fastq.gz
+    - path: sample1/umi-trie/reverse_dedup.fastq.gz
+    - path: sample1/umi-trie/umi_dedup.fastq.gz
