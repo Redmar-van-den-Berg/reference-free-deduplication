@@ -21,6 +21,10 @@ rule all:
             "{sample}/umi-trie/forward_dedup.fastq.gz",
             sample=pep.sample_table["sample_name"],
         ),
+        calib=expand(
+            "{sample}/concat/forward.calib.fastq.gz",
+            sample=pep.sample_table["sample_name"],
+        ),
 
 
 rule concat:
@@ -46,6 +50,23 @@ rule concat:
         cp {input.umi} {output.umi} || cat {input.umi} > {output.umi}
         """
 
+
+rule prepare_calib:
+    """Prepend the UMI to the first read for Calib"""
+    input:
+        forw=rules.concat.output.forw,
+        umi=rules.concat.output.umi,
+        scr=srcdir("scripts/prepend_umi.py"),
+    output:
+        forw=temp("{sample}/concat/forward.calib.fastq.gz")
+    log:
+        "log/{sample}_prepare_calib.txt",
+    container:
+        containers["dnaio"]
+    shell:
+        """
+        python3 {input.scr} {input.umi} {input.forw} {output.forw}
+        """
 
 rule humid:
     """Run HUMID on the fastq files"""

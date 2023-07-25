@@ -11,6 +11,8 @@
   exit_code: 0
   stdout:
     contains:
-      # Test if the default settings from common.smk are used when no other
-      # configuration options are specified
-      - humid
+      # Test that we run HUMID
+      - "rule humid:"
+      # Test that we prepare the reads for Calib
+      - "rule prepare_calib"
+      - "sample1/concat/forward.calib.fastq.gz"
