@@ -1,0 +1,13 @@
+# This file may be used to create an environment using:
+# $ conda env create --file environment.yml
+# platform: linux-64
+name: snakemake-project
+channels:
+  - bioconda
+  - conda-forge
+dependencies:
+  - black>=23.7
+  - peppy>=0.35
+  - pytest-workflow>=2.0.1
+  - snakemake-minimal>=7.30
+  - snakefmt>=0.8.4
