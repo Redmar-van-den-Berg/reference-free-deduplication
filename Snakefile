@@ -128,7 +128,7 @@ rule calib:
             --barcode-length-1 {params.umi_length} \
             --barcode-length-2 0 \
             --gzip-input \
-            --output-prefix $folder/ 2> {log}
+            --output-prefix $folder/ > {log}
         """
 
 rule pardre:

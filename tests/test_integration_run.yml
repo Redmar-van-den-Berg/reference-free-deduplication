@@ -6,7 +6,7 @@
       --reason
       --printshellcmds
       --jobs 1
-      --latency-wait 120
+      --latency-wait 10
       --notemp
       --keep-incomplete
       --use-singularity --singularity-args ' --cleanenv --bind /tmp'
@@ -21,10 +21,19 @@
     - path: benchmarks/humid_sample1.tsv
       contains:
         - max_rss
+    - path: log/sample1-humid.txt
+      contains:
+        - "Reading data... done."
     # Test output file for Calib
     - path: sample1/calib/cluster
     - path: benchmarks/calib_sample1.tsv
+    - path: log/sample1-calib.txt
+      contains:
+        - "No error or minimizer parameters passed."
     # Test output files for ParDRE
     - path: sample1/pardre/forward.fastq.gz
     - path: sample1/pardre/reverse.fastq.gz
     - path: benchmarks/pardre_sample1.tsv
+    - path: log/sample1-pardre.txt
+      contains:
+        - "Command: ParDRe"
