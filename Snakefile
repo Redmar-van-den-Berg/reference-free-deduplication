@@ -18,11 +18,11 @@ config = default
 rule all:
     input:
         humid=expand(
-            "{sample}/umi-trie/forward_dedup.fastq.gz",
+            "{sample}/humid/forward_dedup.fastq.gz",
             sample=pep.sample_table["sample_name"],
         ),
         calib=expand(
-            "{sample}/concat/forward.calib.fastq.gz",
+            "{sample}/calib/cluster",
             sample=pep.sample_table["sample_name"],
         ),
 
@@ -58,7 +58,7 @@ rule prepare_calib:
         umi=rules.concat.output.umi,
         scr=srcdir("scripts/prepend_umi.py"),
     output:
-        forw=temp("{sample}/concat/forward.calib.fastq.gz")
+        forw=temp("{sample}/concat/forward.calib.fastq.gz"),
     log:
         "log/{sample}_prepare_calib.txt",
     container:
@@ -68,6 +68,7 @@ rule prepare_calib:
         python3 {input.scr} {input.umi} {input.forw} {output.forw}
         """
 
+
 rule humid:
     """Run HUMID on the fastq files"""
     input:
@@ -75,12 +76,12 @@ rule humid:
         rev=rules.concat.output.rev,
         umi=rules.concat.output.umi,
     output:
-        forw="{sample}/umi-trie/forward_dedup.fastq.gz",
-        rev="{sample}/umi-trie/reverse_dedup.fastq.gz",
-        umi="{sample}/umi-trie/umi_dedup.fastq.gz",
-        stats="{sample}/umi-trie/stats.dat",
+        forw="{sample}/humid/forward_dedup.fastq.gz",
+        rev="{sample}/humid/reverse_dedup.fastq.gz",
+        umi="{sample}/humid/umi_dedup.fastq.gz",
+        stats="{sample}/humid/stats.dat",
     log:
-        "log/{sample}-umi-trie.txt",
+        "log/{sample}-humid.txt",
     benchmark:
         repeat("benchmarks/humid_{sample}.tsv", config["repeats"])
     container:
@@ -94,4 +95,34 @@ rule humid:
             -d $folder \
             -s \
             {input.forw} {input.rev} {input.umi} 2> {log}
+        """
+
+
+rule calib:
+    """Run Calib on the fastq files"""
+    input:
+        forw=rules.prepare_calib.output.forw,
+        rev=rules.concat.output.rev,
+    params:
+        umi_length=8,
+    output:
+        cluster="{sample}/calib/cluster",
+    log:
+        "log/{sample}-calib.txt",
+    benchmark:
+        repeat("benchmarks/calib_{sample}.tsv", config["repeats"])
+    container:
+        containers["calib"]
+    shell:
+        """
+        folder=$(dirname {output.cluster})
+        mkdir -p $folder
+
+        calib \
+            --input-forward {input.forw} \
+            --input-reverse {input.rev} \
+            --barcode-length-1 {params.umi_length} \
+            --barcode-length-2 0 \
+            --gzip-input \
+            --output-prefix $folder/ 2> {log}
         """
