@@ -10,4 +10,6 @@ that users understand how the changes affect the new version.
 
 v0.0.1-dev
 ---------------------------
++ Add option to specify mismatches
++ Add option to specify UMI size
 + Initial development

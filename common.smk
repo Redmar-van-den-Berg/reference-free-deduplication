@@ -8,7 +8,9 @@ containers = {
 }
 
 default = dict()
-default["repeats"] = 1
+default["repeat"] = 1
+default["mismatch"] = 1
+default["umi_length"] = 8
 
 
 pepfile: config["pepfile"]

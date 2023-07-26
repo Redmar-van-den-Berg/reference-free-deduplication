@@ -29,7 +29,7 @@
     - path: benchmarks/calib_sample1.tsv
     - path: log/sample1-calib.txt
       contains:
-        - "No error or minimizer parameters passed."
+        - "Memory before reading FASTQ"
     # Test output files for ParDRE
     - path: sample1/pardre/forward.fastq.gz
     - path: sample1/pardre/reverse.fastq.gz

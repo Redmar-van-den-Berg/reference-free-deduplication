@@ -79,6 +79,8 @@ rule humid:
         forw=rules.concat.output.forw,
         rev=rules.concat.output.rev,
         umi=rules.concat.output.umi,
+    params:
+        mismatch=config["mismatch"],
     output:
         forw="{sample}/humid/forward_dedup.fastq.gz",
         rev="{sample}/humid/reverse_dedup.fastq.gz",
@@ -87,7 +89,7 @@ rule humid:
     log:
         "log/{sample}-humid.txt",
     benchmark:
-        repeat("benchmarks/humid_{sample}.tsv", config["repeats"])
+        repeat("benchmarks/humid_{sample}.tsv", config["repeat"])
     container:
         containers["humid"]
     shell:
@@ -98,6 +100,7 @@ rule humid:
         humid \
             -d $folder \
             -s \
+            -m {params.mismatch} \
             {input.forw} {input.rev} {input.umi} 2> {log}
         """
 
@@ -108,13 +111,17 @@ rule calib:
         forw=rules.prepend_umi.output.forw,
         rev=rules.concat.output.rev,
     params:
-        umi_length=8,
+        umi_length=config["umi_length"],
+        mismatch=config["mismatch"],
+        minimizer_count=7,
+        minimizer_threshold=2,
+        kmer_size=8,
     output:
         cluster="{sample}/calib/cluster",
     log:
         "log/{sample}-calib.txt",
     benchmark:
-        repeat("benchmarks/calib_{sample}.tsv", config["repeats"])
+        repeat("benchmarks/calib_{sample}.tsv", config["repeat"])
     container:
         containers["calib"]
     shell:
@@ -127,6 +134,10 @@ rule calib:
             --input-reverse {input.rev} \
             --barcode-length-1 {params.umi_length} \
             --barcode-length-2 0 \
+            --error-tolerance {params.mismatch} \
+            --minimizer-count {params.minimizer_count} \
+            --minimizer-threshold {params.minimizer_threshold} \
+            --kmer-size {params.kmer_size} \
             --gzip-input \
             --output-prefix $folder/ > {log}
         """
@@ -138,15 +149,15 @@ rule pardre:
         forw=rules.prepend_umi.output.forw,
         rev=rules.concat.output.rev,
     params:
-        umi_length=8,
-        mismatch=1,
+        umi_length=config["umi_length"],
+        mismatch=config["mismatch"],
     output:
         forw="{sample}/pardre/forward.fastq.gz",
         rev="{sample}/pardre/reverse.fastq.gz",
     log:
         "log/{sample}-pardre.txt",
     benchmark:
-        repeat("benchmarks/pardre_{sample}.tsv", config["repeats"])
+        repeat("benchmarks/pardre_{sample}.tsv", config["repeat"])
     container:
         containers["pardre"]
     shell:
