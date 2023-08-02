@@ -27,7 +27,8 @@ default.update(config)
 config = default
 
 # Make sample names easily accessible
-samples = list(pep.sample_table.sample_name)
+samples = sorted(list(pep.sample_table.sample_name))
+tools = ["humid", "pardre", "calib"]
 
 
 def get_fastq(wildcards, column):
@@ -51,3 +52,16 @@ def get_reverse(wildcards):
 
 def get_umi(wildcards):
     return get_fastq(wildcards, "umi")
+
+
+def get_benchmarks():
+    return expand(
+        "benchmarks/{tool}_{sample}.tsv",
+        sample=samples, tool=tools
+    )
+
+def get_humid_stats():
+    return expand(
+        "{sample}/humid/stats.dat",
+        sample=samples
+    )

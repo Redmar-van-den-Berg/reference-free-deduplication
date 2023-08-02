@@ -29,6 +29,7 @@ rule all:
             "{sample}/pardre/forward.fastq.gz",
             sample=pep.sample_table["sample_name"],
         ),
+        final="final_results.tsv",
 
 
 rule concat:
@@ -173,3 +174,25 @@ rule pardre:
             -o {output.forw} \
             -r {output.rev} 2> {log}
         """
+
+rule merge_benchmarks:
+    """Merge the benchmark files"""
+    input:
+        src=srcdir("scripts/merge-benchmarks.py"),
+        benchmarks=get_benchmarks(),
+        humid_stast=get_humid_stats(),
+    params:
+        samples=' '.join(samples),
+        tools=' '.join(tools),
+    output:
+        tsv="final_results.tsv"
+    log:
+        "log/merge_benchmarks.txt"
+    container:
+        containers["dnaio"]
+    shell:
+      """
+      python3 {input.src} \
+          --samples {params.samples} \
+          --tools {params.tools} > {output.tsv} 2> {log}
+      """

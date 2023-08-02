@@ -19,3 +19,8 @@
       - "rule calib:"
       # Test that we run ParDRe
       - "rule pardre:"
+      # Test that we merge the benchmark results
+      - "rule merge_benchmarks:"
+    contains_regex:
+      # Test that we merge the benchmark results
+      - "merge-benchmarks.py .* --samples sample1 sample2 .* --tools humid pardre calib"

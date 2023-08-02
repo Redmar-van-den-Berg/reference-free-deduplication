@@ -37,3 +37,11 @@
     - path: log/sample1-pardre.txt
       contains:
         - "Command: ParDRe"
+    # Test the merged benchmarks file
+    - path: final_results.tsv
+      contains:
+        - sample1
+        - sample2
+        - humid
+        - pardre
+        - calib
