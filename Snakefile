@@ -18,7 +18,7 @@ config = default
 rule all:
     input:
         humid=expand(
-            "{sample}/humid/forward_dedup.fastq.gz",
+            "{sample}/humid/{sample}_R1_dedup.fastq.gz",
             sample=pep.sample_table["sample_name"],
         ),
         calib=expand(
@@ -38,9 +38,9 @@ rule concat:
         rev=get_reverse,
         umi=get_umi,
     output:
-        forw=temp("{sample}/concat/forward.fastq.gz"),
-        rev=temp("{sample}/concat/reverse.fastq.gz"),
-        umi=temp("{sample}/concat/umi.fastq.gz"),
+        forw=temp("{sample}/concat/{sample}_R1.fastq.gz"),
+        rev=temp("{sample}/concat/{sample}_R2.fastq.gz"),
+        umi=temp("{sample}/concat/{sample}_umi.fastq.gz"),
     log:
         "log/{sample}_concat.txt",
     container:
@@ -62,7 +62,7 @@ rule prepend_umi:
         umi=rules.concat.output.umi,
         scr=srcdir("scripts/prepend_umi.py"),
     output:
-        forw=temp("{sample}/concat/forward.prepend_umi.fastq.gz"),
+        forw=temp("{sample}/concat/{sample}.prepend_umi_R1.fastq.gz"),
     log:
         "log/{sample}_prepare_calib.txt",
     container:
@@ -82,9 +82,9 @@ rule humid:
     params:
         mismatch=config["mismatch"],
     output:
-        forw="{sample}/humid/forward_dedup.fastq.gz",
-        rev="{sample}/humid/reverse_dedup.fastq.gz",
-        umi="{sample}/humid/umi_dedup.fastq.gz",
+        forw="{sample}/humid/{sample}_R1_dedup.fastq.gz",
+        rev="{sample}/humid/{sample}_R2_dedup.fastq.gz",
+        umi="{sample}/humid/{sample}_umi_dedup.fastq.gz",
         stats="{sample}/humid/stats.dat",
     log:
         "log/{sample}-humid.txt",

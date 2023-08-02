@@ -15,9 +15,9 @@
       --snakefile Snakefile
   files:
     # Expected outpu files for HUMID
-    - path: sample1/humid/forward_dedup.fastq.gz
-    - path: sample1/humid/reverse_dedup.fastq.gz
-    - path: sample1/humid/umi_dedup.fastq.gz
+    - path: sample1/humid/sample1_R1_dedup.fastq.gz
+    - path: sample1/humid/sample1_R2_dedup.fastq.gz
+    - path: sample1/humid/sample1_umi_dedup.fastq.gz
     - path: benchmarks/humid_sample1.tsv
       contains:
         - max_rss
