@@ -15,7 +15,7 @@
       - "rule humid:"
       # Test that we prepare the reads for Calib
       - "rule prepend_umi:"
-      - "sample1/concat/forward.calib.fastq.gz"
+      - "sample1/concat/forward.prepend_umi.fastq.gz"
       # Test the output file from Calib
       - "rule calib:"
       # Test that we run ParDRe

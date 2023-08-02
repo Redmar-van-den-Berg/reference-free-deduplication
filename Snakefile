@@ -62,7 +62,7 @@ rule prepend_umi:
         umi=rules.concat.output.umi,
         scr=srcdir("scripts/prepend_umi.py"),
     output:
-        forw=temp("{sample}/concat/forward.calib.fastq.gz"),
+        forw=temp("{sample}/concat/forward.prepend_umi.fastq.gz"),
     log:
         "log/{sample}_prepare_calib.txt",
     container:
