@@ -11,6 +11,10 @@
   exit_code: 0
   stdout:
     contains:
+      # Test merging fastq files for sample1. Note that the second FastQ set for sample1
+      # has the forward/reverse switched around, otherwise PEP considers them
+      # duplicates and removes one of the data sets
+      - "cp tests/data/micro_R1.fq.gz tests/data/micro_R2.fq.gz sample1/concat/sample1_R1.fastq.gz"
       # Test that we run HUMID
       - "rule humid:"
       # Test that we prepare the reads for Calib
