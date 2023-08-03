@@ -55,13 +55,8 @@ def get_umi(wildcards):
 
 
 def get_benchmarks():
-    return expand(
-        "benchmarks/{tool}_{sample}.tsv",
-        sample=samples, tool=tools
-    )
+    return expand("benchmarks/{tool}_{sample}.tsv", sample=samples, tool=tools)
+
 
 def get_humid_stats():
-    return expand(
-        "{sample}/humid/stats.dat",
-        sample=samples
-    )
+    return expand("{sample}/humid/stats.dat", sample=samples)

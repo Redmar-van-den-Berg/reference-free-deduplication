@@ -175,6 +175,7 @@ rule pardre:
             -r {output.rev} 2> {log}
         """
 
+
 rule merge_benchmarks:
     """Merge the benchmark files"""
     input:
@@ -182,16 +183,16 @@ rule merge_benchmarks:
         benchmarks=get_benchmarks(),
         humid_stast=get_humid_stats(),
     params:
-        samples=' '.join(samples),
-        tools=' '.join(tools),
+        samples=" ".join(samples),
+        tools=" ".join(tools),
     output:
-        tsv="final_results.tsv"
+        tsv="final_results.tsv",
     log:
-        "log/merge_benchmarks.txt"
+        "log/merge_benchmarks.txt",
     container:
         containers["dnaio"]
     shell:
-      """
+        """
       python3 {input.src} \
           --samples {params.samples} \
           --tools {params.tools} > {output.tsv} 2> {log}
