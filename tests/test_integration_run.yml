@@ -43,3 +43,7 @@
         - humid
         - pardre
         - calib
+        # Number of reads for sample1
+        - "15440"
+        # Number of reads for sample2
+        - "7720"
